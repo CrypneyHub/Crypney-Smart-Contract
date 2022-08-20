@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.2;
@@ -1323,15 +1322,15 @@ contract card is ERC20, Ownable {
     mapping(address => bool) public _isBlacklisted;
 
     uint256 public buyBUSDRewardsFee = 2;
-    uint256 public buyLiquidityFee = 2;
+    uint256 public buyLiquidityFee = 1;
     uint256 public buyMarketingFee = 6;
-    uint256 public buyBurnFee = 0;
+    uint256 public buyBurnFee = 1;
     uint256 public totalBuyFees = buyBUSDRewardsFee.add(buyLiquidityFee).add(buyMarketingFee).add(buyBurnFee);
 
     uint256 public sellBUSDRewardsFee = 2;
-    uint256 public sellLiquidityFee = 2;
+    uint256 public sellLiquidityFee = 1;
     uint256 public sellMarketingFee = 6;
-    uint256 public sellBurnFee = 0;
+    uint256 public sellBurnFee = 1;
     uint256 public totalSellFees = sellBUSDRewardsFee.add(sellLiquidityFee).add(sellMarketingFee).add(sellBurnFee);
 
     address public _marketingWalletAddress = 0xB00420F89db62c52Bc5b39a61F4A4F3C181Fff55;
@@ -1381,7 +1380,7 @@ contract card is ERC20, Ownable {
     	address indexed processor
     );
 
-    constructor() public ERC20("Crypney", "card") {
+    constructor() public ERC20("Crypney - Crypto Credit Card", "card") {
 
     	dividendTracker = new cardDividendTracker();
 
@@ -1610,6 +1609,10 @@ contract card is ERC20, Ownable {
 
         // if any account belongs to _isExcludedFromFee account then remove the fee
         if(_isExcludedFromFees[from] || _isExcludedFromFees[to]) {
+            takeFee = false;
+        }
+
+        if(!automatedMarketMakerPairs[from] && !automatedMarketMakerPairs[to]){
             takeFee = false;
         }
 
